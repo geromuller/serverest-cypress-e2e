@@ -7,6 +7,12 @@ export const createUser = (userData) =>
     body: userData,
   });
 
+export const getUsers = () =>
+  cy.request({
+    method: 'GET',
+    url: `${apiUrl()}/usuarios`,
+  });
+
 export const deleteUser = (userId) =>
   cy.request({
     method: 'DELETE',
