@@ -3,25 +3,13 @@ import { buildProduct } from '../../support/factories/product.factory';
 import { buildAdminUser } from '../../support/factories/user.factory';
 
 describe('Frontend - admin products', () => {
-  let adminUser;
   let adminUserId;
-  let createdProductName;
+  let adminAuthorizationToken;
+  let createdProductId;
 
   afterEach(() => {
-    if (createdProductName && adminUser) {
-      cy.loginViaApi(adminUser.email, adminUser.password).then((loginResponse) => {
-        const authorizationToken = loginResponse.body.authorization;
-
-        getProducts().then((productsResponse) => {
-          const createdProduct = productsResponse.body.produtos.find(
-            (product) => product.nome === createdProductName
-          );
-
-          if (createdProduct) {
-            cy.deleteProductViaApi(createdProduct._id, authorizationToken);
-          }
-        });
-      });
+    if (createdProductId && adminAuthorizationToken) {
+      cy.deleteProductViaApi(createdProductId, adminAuthorizationToken);
     }
 
     if (adminUserId) {
@@ -34,9 +22,7 @@ describe('Frontend - admin products', () => {
 
   it('logs in as an admin and creates a product successfully', () => {
     const product = buildProduct();
-
-    adminUser = buildAdminUser();
-    createdProductName = product.nome;
+    const adminUser = buildAdminUser();
 
     cy.createUserViaApi(adminUser).then((createAdminResponse) => {
       adminUserId = createAdminResponse.body._id;
@@ -73,9 +59,20 @@ describe('Frontend - admin products', () => {
       cy.get('[data-testid="logout"]').should('be.visible');
 
       cy.window().then((window) => {
-        expect(window.localStorage.getItem('serverest/userToken'))
+        adminAuthorizationToken = window.localStorage.getItem('serverest/userToken');
+
+        expect(adminAuthorizationToken)
           .to.be.a('string')
           .and.not.be.empty;
+      });
+
+      getProducts().then((productsResponse) => {
+        const createdProduct = productsResponse.body.produtos.find(
+          (listedProduct) => listedProduct.nome === product.nome
+        );
+
+        expect(createdProduct, 'created product in catalog').to.exist;
+        createdProductId = createdProduct._id;
       });
     });
   });

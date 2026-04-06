@@ -42,7 +42,7 @@ describe('Frontend - public registration', () => {
     cy.get('[data-testid="lista-de-compras"]').should('be.visible');
 
     cy.window().then((window) => {
-      expect(window.localStorage.getItem('serverest/userNome')).to.eq(user.nome);
+      expect(window.localStorage.getItem('serverest/userEmail')).to.eq(user.email);
       expect(window.localStorage.getItem('serverest/userToken'))
         .to.be.a('string')
         .and.not.be.empty;
