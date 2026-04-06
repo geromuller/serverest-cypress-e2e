@@ -1,0 +1,25 @@
+{
+  "name": "serverest-cypress-challenge",
+  "version": "1.0.0",
+  "description": "Cypress + JavaScript automation challenge for ServeRest frontend and API.",
+  "scripts": {
+    "test": "npm run cy:run",
+    "cy:open": "cypress open",
+    "cy:run": "cypress run",
+    "test:frontend": "cypress run --spec \"cypress/e2e/frontend/**/*.cy.js\"",
+    "test:api": "cypress run --spec \"cypress/e2e/api/**/*.cy.js\""
+  },
+  "keywords": [
+    "cypress",
+    "javascript",
+    "e2e",
+    "api",
+    "qa"
+  ],
+  "author": "",
+  "license": "MIT",
+  "type": "commonjs",
+  "devDependencies": {
+    "cypress": "^15.13.0"
+  }
+}
